@@ -8,7 +8,7 @@ It uses historical spot pricing data (averages) to establish such an estimate.
 
 For example:
 
-	costit.sh --slave_type=r3.4xlarge --num_slaves=100 --days=1
+	costit.py --slave_type=r3.4xlarge --num_slaves=100 --days=1
 
 Will compute the total dollars spent running a cluster of 100 r3.4xlarge nodes for 1 day based on the last 7 days of pricing. ($2026.82 at time of writing)
 
@@ -17,7 +17,23 @@ You will need to have the `aws` [command line tools](https://aws.amazon.com/cli/
 
 ## Usage
 
-	costit.sh INSTANCE_TYPE DAYS_BACK_PRICING NUM_NODES NUM_HOURS [NUM_DAYS [NUM_WEEKS [...]]]
+usage: costit.py [-h] [--hours HOURS] [--days DAYS] [--weeks WEEKS]
+                 [--days_back DAYS_BACK] [--slave_type SLAVE_TYPE]
+                 [--master_type MASTER_TYPE] [--num_slaves NUM_SLAVES]
+                 [--availability_zone AVAILABILITY_ZONE]
+
+Estimates AWS EC2 spot cluster costs.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --hours HOURS
+  --days DAYS
+  --weeks WEEKS
+  --days_back DAYS_BACK
+  --slave_type SLAVE_TYPE
+  --master_type MASTER_TYPE
+  --num_slaves NUM_SLAVES
+  --availability_zone AVAILABILITY_ZONE
 
 ## Limitations
 
