@@ -8,9 +8,9 @@ It uses historical spot pricing data (averages) to establish such an estimate.
 
 For example:
 
-	costit.sh r3.4xlarge 7 100 24
+	costit.sh --slave_type=r3.4xlarge --num_slaves=100 --days=1
 
-Will compute the total dollars spent running a cluster of 100 r3.4xlarge nodes for 24 hours based on the last 7 days of pricing. ($1266.24 at time of writing)
+Will compute the total dollars spent running a cluster of 100 r3.4xlarge nodes for 1 day based on the last 7 days of pricing. ($2026.82 at time of writing)
 
 ## Requirements
 You will need to have the `aws` [command line tools](https://aws.amazon.com/cli/) installed.
