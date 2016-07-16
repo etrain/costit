@@ -41,7 +41,6 @@ Currently this code assumes that you're using `r3.4xlarge` as your master instan
 
 ## Future Work
 
-1. Port my terrible shell to python. Boto [supports](http://boto3.readthedocs.io/en/latest/reference/services/ec2.html#EC2.Client.describe_spot_price_history) the main call we use.
 1. Error handling.
 1. Determine if we can answer the question: "how much is my current spot cluster costing me right now." with these APIs.
 
