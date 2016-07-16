@@ -36,15 +36,17 @@ def get_reserved_price(availability_zone, instance_type):
   return float(resp["ReservedInstancesOfferings"][0]["RecurringCharges"][0]["Amount"])
 
 def parse_options():
-  parser = argparse.ArgumentParser(description="Estimates AWS EC2 spot cluster costs.")
-  parser.add_argument("--hours", type=int, default=0)
-  parser.add_argument("--days", type=int, default=0)
-  parser.add_argument("--weeks", type=int, default=0)
-  parser.add_argument("--days_back", type=int, default=7)
-  parser.add_argument("--slave_type", default="r3.4xlarge")
-  parser.add_argument("--master_type", default="r3.4xlarge")
-  parser.add_argument("--num_slaves", type=int, default=1)
-  parser.add_argument("--availability_zone", default="us-west-2b")
+  parser = argparse.ArgumentParser(
+    description="Estimates AWS EC2 spot cluster costs.",
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+  parser.add_argument("--hours", type=int, default=0, help="Number of hours.")
+  parser.add_argument("--days", type=int, default=0, help="Number of days.")
+  parser.add_argument("--weeks", type=int, default=0, help="Number of weeks.")
+  parser.add_argument("--days_back", type=int, default=7, help="Number of days to use when calculating average spot price.")
+  parser.add_argument("--slave_type", default="r3.4xlarge", help="Slave instance type.")
+  parser.add_argument("--master_type", default="r3.4xlarge", help="Master instance type.")
+  parser.add_argument("--num_slaves", type=int, default=1, help="Number of slaves.")
+  parser.add_argument("--availability_zone", default="us-west-2b", help="Availability zone.")
     
   options = parser.parse_args()
   

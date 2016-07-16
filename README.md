@@ -8,7 +8,7 @@ It uses historical spot pricing data (averages) to establish such an estimate.
 
 For example:
 
-	costit.py --slave_type=r3.4xlarge --num_slaves=100 --days=1
+	python costit.py --slave_type=r3.4xlarge --num_slaves=100 --days=1
 
 Will compute the total dollars spent running a cluster of 100 r3.4xlarge nodes for 1 day based on the last 7 days of pricing. ($2026.82 at time of writing)
 
@@ -26,14 +26,20 @@ Requires boto3, [properly configured](http://boto3.readthedocs.io/en/latest/guid
 
 	optional arguments:
 	  -h, --help            show this help message and exit
-	  --hours HOURS
-	  --days DAYS
-	  --weeks WEEKS
+	  --hours HOURS         Number of hours. (default: 0)
+	  --days DAYS           Number of days. (default: 0)
+	  --weeks WEEKS         Number of weeks. (default: 0)
 	  --days_back DAYS_BACK
+	                        Number of days to use when calculating average spot
+	                        price. (default: 7)
 	  --slave_type SLAVE_TYPE
+	                        Slave instance type. (default: r3.4xlarge)
 	  --master_type MASTER_TYPE
+	                        Master instance type. (default: r3.4xlarge)
 	  --num_slaves NUM_SLAVES
+	                        Number of slaves. (default: 1)
 	  --availability_zone AVAILABILITY_ZONE
+	                        Availability zone. (default: us-west-2b)
 
 ## Limitations
 
