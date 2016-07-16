@@ -10,7 +10,7 @@ For example:
 
 	python costit.py --slave_type=r3.4xlarge --num_slaves=100 --days=1
 
-Will compute the total dollars spent running a cluster of 100 r3.4xlarge nodes for 1 day based on the last 7 days of pricing. ($2026.82 at time of writing)
+Will compute the total dollars spent running a cluster of 100 r3.4xlarge nodes for 1 day based on the last 7 days of pricing. ($445.63 at time of writing)
 
 ## Requirements
 Requires boto3, [properly configured](http://boto3.readthedocs.io/en/latest/guide/quickstart.html).
