@@ -9,7 +9,7 @@ def costs(hours, cost_per_hour, machines=1):
   return hours*cost_per_hour*machines
   
 def get_spot_price(availability_zone, instance_type, days_back):
-  client = boto3.client('ec2')
+  client = boto3.client('ec2', region_name=availability_zone[:-1])
   resp = client.describe_spot_price_history(
       StartTime=datetime.utcnow()-timedelta(days=days_back),
       EndTime=datetime.utcnow(),
@@ -26,7 +26,7 @@ def get_spot_price(availability_zone, instance_type, days_back):
   return sum(price_list)/len(price_list)
   
 def get_reserved_price(availability_zone, instance_type):
-  client = boto3.client('ec2')
+  client = boto3.client('ec2', region_name=availability_zone[:-1])
   resp = client.describe_reserved_instances_offerings(
     InstanceType=instance_type,
     AvailabilityZone=availability_zone,

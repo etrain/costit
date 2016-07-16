@@ -13,27 +13,27 @@ For example:
 Will compute the total dollars spent running a cluster of 100 r3.4xlarge nodes for 1 day based on the last 7 days of pricing. ($2026.82 at time of writing)
 
 ## Requirements
-You will need to have the `aws` [command line tools](https://aws.amazon.com/cli/) installed.
+Requires boto3, [properly configured](http://boto3.readthedocs.io/en/latest/guide/quickstart.html).
 
 ## Usage
 
-usage: costit.py [-h] [--hours HOURS] [--days DAYS] [--weeks WEEKS]
-                 [--days_back DAYS_BACK] [--slave_type SLAVE_TYPE]
-                 [--master_type MASTER_TYPE] [--num_slaves NUM_SLAVES]
-                 [--availability_zone AVAILABILITY_ZONE]
+	usage: costit.py [-h] [--hours HOURS] [--days DAYS] [--weeks WEEKS]
+	                 [--days_back DAYS_BACK] [--slave_type SLAVE_TYPE]
+	                 [--master_type MASTER_TYPE] [--num_slaves NUM_SLAVES]
+	                 [--availability_zone AVAILABILITY_ZONE]
 
-Estimates AWS EC2 spot cluster costs.
+	Estimates AWS EC2 spot cluster costs.
 
-optional arguments:
-  -h, --help            show this help message and exit
-  --hours HOURS
-  --days DAYS
-  --weeks WEEKS
-  --days_back DAYS_BACK
-  --slave_type SLAVE_TYPE
-  --master_type MASTER_TYPE
-  --num_slaves NUM_SLAVES
-  --availability_zone AVAILABILITY_ZONE
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  --hours HOURS
+	  --days DAYS
+	  --weeks WEEKS
+	  --days_back DAYS_BACK
+	  --slave_type SLAVE_TYPE
+	  --master_type MASTER_TYPE
+	  --num_slaves NUM_SLAVES
+	  --availability_zone AVAILABILITY_ZONE
 
 ## Limitations
 
