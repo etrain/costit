@@ -2,7 +2,7 @@
 
 This repository contains a set of scripts designed to help answer questions of the form:
 
-How much would it cost me to run a spark cluster of N spot worker nodes and one master for H hours?
+How much would it cost me to run an EC2 cluster of N spot worker nodes and one master for H hours?
 
 It uses historical spot pricing data (averages) to establish such an estimate.
 
