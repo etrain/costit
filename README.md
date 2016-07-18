@@ -1,4 +1,4 @@
-# COSTIT
+# costit
 
 This repository contains a set of scripts designed to help answer questions of the form:
 
@@ -18,9 +18,10 @@ Requires boto3, [properly configured](http://boto3.readthedocs.io/en/latest/guid
 ## Usage
 
 	usage: costit.py [-h] [--hours HOURS] [--days DAYS] [--weeks WEEKS]
-	                 [--days_back DAYS_BACK] [--slave_type SLAVE_TYPE]
+	                 [--instance_type INSTANCE_TYPE] [--slave_type SLAVE_TYPE]
 	                 [--master_type MASTER_TYPE] [--num_slaves NUM_SLAVES]
 	                 [--availability_zone AVAILABILITY_ZONE]
+	                 [--spot_method {average,max,last}] [--days_back DAYS_BACK]
 
 	Estimates AWS EC2 spot cluster costs.
 
@@ -29,9 +30,9 @@ Requires boto3, [properly configured](http://boto3.readthedocs.io/en/latest/guid
 	  --hours HOURS         Number of hours. (default: 0)
 	  --days DAYS           Number of days. (default: 0)
 	  --weeks WEEKS         Number of weeks. (default: 0)
-	  --days_back DAYS_BACK
-	                        Number of days to use when calculating average spot
-	                        price. (default: 7)
+	  --instance_type INSTANCE_TYPE
+	                        Instance type for master *and* slaves overrides slave
+	                        and master type if set. (default: None)
 	  --slave_type SLAVE_TYPE
 	                        Slave instance type. (default: r3.4xlarge)
 	  --master_type MASTER_TYPE
@@ -40,15 +41,12 @@ Requires boto3, [properly configured](http://boto3.readthedocs.io/en/latest/guid
 	                        Number of slaves. (default: 1)
 	  --availability_zone AVAILABILITY_ZONE
 	                        Availability zone. (default: us-west-2b)
-
-## Limitations
-
-Currently this code assumes that you're using `r3.4xlarge` as your master instance type.
-
-## Future Work
-
-1. Error handling.
-1. Determine if we can answer the question: "how much is my current spot cluster costing me right now." with these APIs.
+	  --spot_method {average,max,last}
+	                        Method to use when calculating prevailing spot price.
+	                        (default: average)
+	  --days_back DAYS_BACK
+	                        Number of days to use when calculating average spot
+	                        price. (default: 1)
 
 ## License
 
