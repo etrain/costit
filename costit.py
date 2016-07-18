@@ -2,6 +2,7 @@
 
 import argparse
 import boto3
+import statistics
 from datetime import datetime, timedelta
 
 
@@ -40,8 +41,9 @@ def get_spot_price(
 
     return {
         "average": lambda x: sum(x) / len(x),
+        "last": lambda x: x[0],
         "max": max,
-        "last": lambda x: x[0]
+        "median": statistics.median
     }[method](price_list)
 
 
@@ -99,7 +101,8 @@ def parse_options():
         choices=[
             "average",
             "max",
-            "last"],
+            "last",
+            "median"],
         default="average",
         help="Method to use when calculating prevailing spot price.")
     parser.add_argument(
@@ -141,7 +144,7 @@ def get_cost_estimate(
       slave_type (string): What will the instance type of the slaves be?
       days_back (int): How many days of pricing history should be used?
       spot_method (string): What price calculation method should be used?
-          (one of "average", "max", or "last")
+          (one of "average", "max", "median", or "last")
 
     Returns:
       An estimate (in USD) of the cost to run such a cluster for this length of time.
