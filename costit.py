@@ -2,8 +2,8 @@ import argparse
 import boto3
 from datetime import datetime, timedelta
 
-def total_hours(opts):
-  return opts.hours + 24*(opts.days + 7*opts.weeks)
+def total_hours(hours, days, weeks):
+  return hours + 24*(days + 7*weeks)
 
 def costs(hours, cost_per_hour, machines=1):
   return hours*cost_per_hour*machines
@@ -66,15 +66,53 @@ def parse_options():
   
   return options
   
+def get_cost_estimate(
+  hours=0, 
+  days=0, 
+  weeks=0, 
+  availability_zone="us-west-2b", 
+  master_type="r3.4xlarge", 
+  slave_type="r3.4xlarge",
+  days_back=1,
+  spot_method="average",
+  num_slaves=1):
+  """Deliver a cost estimate for running a given cluster in an availability zone with the given instance type for
+     a certain length of time.
+  
+  Args:
+    hours (int): How many hours will the cluster run for?
+    days (int): How many days?
+    weeks (int): How many weeks?
+    availability_zone (string): In what availability zone?
+    master_type (string): What will the instance type of the master be?
+    slave_type (string): What will the instance type of the slaves be?
+    days_back (int): How many days of pricing history should be used?
+    spot_method (string): What price calculation method should be used? (one of "average", "max", or "last")
+  
+  Returns:
+    An estimate (in USD) of the cost to run such a cluster for this length of time.
+  """
+  hours = total_hours(hours, days, weeks)
+  
+  slave_hourly_price = get_spot_price(availability_zone, slave_type, days_back, spot_method)
+  master_hourly_price = get_reserved_price(availability_zone, master_type)
+  
+  total_cost = costs(hours, master_hourly_price) + costs(hours, slave_hourly_price, num_slaves)
+  
+  return total_cost
+  
 def main():
   opts = parse_options()
   
-  hours = total_hours(opts)
-  
-  slave_hourly_price = get_spot_price(opts.availability_zone, opts.slave_type, opts.days_back, opts.spot_method)
-  master_hourly_price = get_reserved_price(opts.availability_zone, opts.master_type)
-  
-  total_cost = costs(hours, master_hourly_price) + costs(hours, slave_hourly_price, opts.num_slaves)
+  total_cost = get_cost_estimate(opts.hours,
+    opts.days,
+    opts.weeks,
+    opts.availability_zone,
+    opts.master_type,
+    opts.slave_type,
+    opts.days_back,
+    opts.spot_method,
+    opts.num_slaves)
   
   print "$%4.2f" % total_cost
   
