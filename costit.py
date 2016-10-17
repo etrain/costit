@@ -88,6 +88,11 @@ def parse_options():
         default="r3.4xlarge",
         help="Master instance type.")
     parser.add_argument(
+        "--num_masters",
+        type=int,
+        default=1,
+        help="Number of slaves.")
+    parser.add_argument(
         "--num_slaves",
         type=int,
         default=1,
@@ -131,6 +136,7 @@ def get_cost_estimate(
         slave_type="r3.4xlarge",
         days_back=1,
         spot_method="average",
+        num_masters=1,
         num_slaves=1):
     """Deliver a cost estimate for running a given cluster in an availability zone with
        the given instance type for a certain length of time.
@@ -149,16 +155,24 @@ def get_cost_estimate(
     Returns:
       An estimate (in USD) of the cost to run such a cluster for this length of time.
     """
-    slave_hourly_price = get_spot_price(
-        ec2_client,
-        availability_zone,
-        slave_type,
-        days_back,
-        spot_method)
-    master_hourly_price = get_reserved_price(
-        ec2_client, availability_zone, master_type)
+        
+    if num_slaves > 0:
+      slave_hourly_price = get_spot_price(
+          ec2_client,
+          availability_zone,
+          slave_type,
+          days_back,
+          spot_method)
+    else:
+      slave_hourly_price = 0.0
 
-    total_cost = costs(hours, master_hourly_price) + \
+    if num_masters > 0: 
+      master_hourly_price = get_reserved_price(
+          ec2_client, availability_zone, master_type)
+    else:
+      master_hourly_price = 0.0
+
+    total_cost = costs(hours, master_hourly_price, num_masters) + \
         costs(hours, slave_hourly_price, num_slaves)
 
     return total_cost
@@ -180,6 +194,7 @@ def main():
         opts.slave_type,
         opts.days_back,
         opts.spot_method,
+        opts.num_masters,
         opts.num_slaves)
 
     print "$%4.2f" % total_cost
