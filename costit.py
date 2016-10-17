@@ -1,9 +1,10 @@
 """This module estimates the cost of running a cluster of EC2 spot instances."""
 
 import argparse
-import boto3
-import statistics
 from datetime import datetime, timedelta
+import statistics
+import boto3
+
 
 
 def total_hours(hours, days, weeks):
@@ -91,12 +92,12 @@ def parse_options():
         "--num_masters",
         type=int,
         default=1,
-        help="Number of slaves.")
+        help="Number of masters (priced at reserve rate).")
     parser.add_argument(
         "--num_slaves",
         type=int,
         default=1,
-        help="Number of slaves.")
+        help="Number of slaves (priced at spot rate).")
     parser.add_argument(
         "--availability_zone",
         default="us-west-2b",
@@ -155,22 +156,22 @@ def get_cost_estimate(
     Returns:
       An estimate (in USD) of the cost to run such a cluster for this length of time.
     """
-        
-    if num_slaves > 0:
-      slave_hourly_price = get_spot_price(
-          ec2_client,
-          availability_zone,
-          slave_type,
-          days_back,
-          spot_method)
-    else:
-      slave_hourly_price = 0.0
 
-    if num_masters > 0: 
-      master_hourly_price = get_reserved_price(
-          ec2_client, availability_zone, master_type)
+    if num_slaves > 0:
+        slave_hourly_price = get_spot_price(
+            ec2_client,
+            availability_zone,
+            slave_type,
+            days_back,
+            spot_method)
     else:
-      master_hourly_price = 0.0
+        slave_hourly_price = 0.0
+
+    if num_masters > 0:
+        master_hourly_price = get_reserved_price(
+            ec2_client, availability_zone, master_type)
+    else:
+        master_hourly_price = 0.0
 
     total_cost = costs(hours, master_hourly_price, num_masters) + \
         costs(hours, slave_hourly_price, num_slaves)
