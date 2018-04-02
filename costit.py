@@ -1,10 +1,10 @@
 """This module estimates the cost of running a cluster of EC2 spot instances."""
 
+from __future__ import print_function
 import argparse
 from datetime import datetime, timedelta
 import statistics
 import boto3
-
 
 
 def total_hours(hours, days, weeks):
@@ -198,7 +198,8 @@ def main():
         opts.num_masters,
         opts.num_slaves)
 
-    print "$%4.2f" % total_cost
+    print("$%4.2f" % total_cost)
+
 
 if __name__ == "__main__":
     main()
